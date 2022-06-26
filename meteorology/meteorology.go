@@ -1,6 +1,8 @@
 package meteorology
 
-import "strconv"
+import (
+	"fmt"
+)
 
 type TemperatureUnit int
 
@@ -24,8 +26,8 @@ type Temperature struct {
 	unit   TemperatureUnit
 }
 
-func (t Temperature) String() {
-	return strconv.Itoa(t.degree) + t.unit.String()
+func (t Temperature) String() string {
+	return fmt.Sprintf("%d %s", t.degree, t.unit.String())
 }
 
 // Add a String method to the Temperature type
@@ -37,8 +39,11 @@ const (
 	MilesPerHour SpeedUnit = 1
 )
 
-func (u SpeedUnit) String() {
-
+func (u SpeedUnit) String() string {
+	if u == KmPerHour {
+		return "km/h"
+	}
+	return "mph"
 }
 
 // Add a String method to SpeedUnit
@@ -46,6 +51,10 @@ func (u SpeedUnit) String() {
 type Speed struct {
 	magnitude int
 	unit      SpeedUnit
+}
+
+func (s Speed) String() string {
+	return fmt.Sprintf("%d %s", s.magnitude, s.unit.String())
 }
 
 // Add a String method to Speed
@@ -59,3 +68,8 @@ type MeteorologyData struct {
 }
 
 // Add a String method to MeteorologyData
+
+func (m MeteorologyData) String() string {
+	return fmt.Sprintf("%s: %s, Wind %s at %s, %d%% Humidity",
+		m.location, m.temperature.String(), m.windDirection, m.windSpeed.String(), m.humidity)
+}
